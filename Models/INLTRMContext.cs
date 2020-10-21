@@ -1,10 +1,12 @@
 ﻿using System;
+using InlTrmWeb.Authentication;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace InlTrmWeb.Models
 {
-    public partial class INLTRMContext : DbContext
+    public partial class INLTRMContext : IdentityDbContext<ApplicationUser>
     {
         public INLTRMContext()
         {
@@ -24,13 +26,14 @@ namespace InlTrmWeb.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Database=INLTRM;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Attachments>(entity =>
             {
                 entity.HasKey(e => e.AttachId)
